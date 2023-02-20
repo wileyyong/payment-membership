@@ -1,9 +1,10 @@
 body {
     background: url('https://wallpaperaccess.com/full/5137775.jpg') !important;
     background-repeat: no-repeat;
-    background-position: center center;
     background-attachment: fixed;
     background-size: cover;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
     /* min-height: 200% !important; */
     width: 100%;
     backdrop-filter: blur(2px);

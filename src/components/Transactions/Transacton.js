@@ -116,7 +116,7 @@ console.log(error.message);
   return (
     <Grid container mt={2}> 
     
-    <div className="rdc" style={{ height: "700px", backgroundColor: "#fff" }}>
+    <div className="rdc" style={{ minHeight: "700px", backgroundColor: "#fff", marginBottom: "30px" }}>
       {listItems}
 
       {/* <Box
