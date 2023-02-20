@@ -1,0 +1,36 @@
+body {
+    background: url('https://wallpaperaccess.com/full/5137775.jpg') !important;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+    /* min-height: 200% !important; */
+    width: 100%;
+    backdrop-filter: blur(2px);
+    overflow-x: hidden !important;
+}
+
+.page{
+    position: absolute;
+}
+
+
+.fade-appear, .fade-enter {
+    opacity: 0;
+    z-index: 1;
+}
+
+.fade-appear-active, .fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms linear 150ms;
+}
+
+.fade-exit{
+    opacity: 1;
+}
+
+.fade-exit.fade-exit-active{
+    opacity: 1;
+    transition: opacity 150ms linear;
+
+}

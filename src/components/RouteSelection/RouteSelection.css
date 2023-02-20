@@ -1,0 +1,85 @@
+.ic .li a {
+    cursor: pointer;
+}
+
+.routePicker {
+    padding: 30px 18px;
+}
+
+.dropdown>.dropdown-menu {
+    top: 200%;
+    transition: 0.3s all ease-in-out;
+}
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+    top: 100%;
+}
+
+.dropdown>.dropdown-toggle:active {
+    pointer-events: none;
+}
+
+#myButton {
+    padding: 10px 40px;
+    background-color: #00acee;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 10;
+  
+    height: 50px;
+    width: 10px;
+    /* margin-left: 530px;
+    margin-top: 0%; */
+ 
+ 
+  }
+ 
+  
+  
+ 
+.flex-container-duplicate{
+    display: flex;
+    align-items: center;
+    justify-content: space-between !important;
+    margin-top: 120px;
+    width: 100% !important;
+}
+
+.flex-second-container{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background-color: rgba(251, 251, 251, 0.507);
+    padding:5px 20px;
+    border-radius: 10px;
+    color: black;
+}
+
+.blue{
+    color: rgb(0, 7, 110);
+}
+
+.black{
+    color: black !important;
+}
+
+.right{
+    text-align: right;
+    /* letter-spacing: 1px; */
+}
+
+.flex-second-container >div{
+    width: 250px;
+}
+
+.address{
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.jjtToken{
+    font-size: 16px;
+    font-weight: 700;
+}

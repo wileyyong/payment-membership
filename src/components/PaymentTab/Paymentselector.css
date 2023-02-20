@@ -1,0 +1,18 @@
+#myButton {
+    padding: 10px 80px;
+    background-color: #00acee;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    /* margin-left: 200px; */
+    margin-top: 0%;
+    width: "300px";
+ 
+  }
+  .rdc {
+    /* margin-left: -15px; */
+    /* height: 100%; */
+    width: 100%;
+    border: 1px solid #00acee;
+    background-color: #00abeeb0;
+  }
