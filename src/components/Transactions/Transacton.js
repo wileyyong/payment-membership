@@ -55,54 +55,53 @@ console.log(error.message);
     .then(response => response.data)
     .then(data => {
       const items = rows?.map(
-        (el, i) => {
+        (el, j) => {
             return (
-              <TableContainer style={{background:'white'}}>
-              <Table sx={{ minWidth: 650,height:'max-content' }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Si. No.</TableCell>
-                    <TableCell align="center">Transaction ID</TableCell>
-                    <TableCell align="center">Card Type</TableCell>
-                    <TableCell align="center">Date & Time</TableCell>
-                    <TableCell align="center">Paid Amount</TableCell>
-                    <TableCell align="center">Transaction Hash</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {data.map((row,i) => (
-                    <TableRow
-                      key={i}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell align="center" component="th" scope="row">
-                        {i+1}
-                      </TableCell>
-                      <TableCell align="center">#{row?.number.split("_")[1]}</TableCell>
-                      <TableCell align="center">
-                      <img
-                    src={`/${row.ccType}.png`} alt="Card"
-                    style={{ width: "40px", marginTop: 0 }}
-                  />
-
-                      </TableCell>
-                      <TableCell align="center">  {moment(row?.createdAt).format("LLL")}</TableCell>
-                      <TableCell align="center">{row?.paidAmount.toFixed(2)}$</TableCell>
-                      <TableCell align="center">
-                        <a target="_blank" href={`https://testnet.bscscan.com/tx/${row?.tokenTransactionHash}`}>
-                        {row?.tokenTransactionHash && truncateEthAddress(row?.tokenTransactionHash)}
-
-                        </a>
-                        
-                       
-                        
-                        </TableCell>
+              <TableContainer style={{background:'white'}} key={j}>
+                <Table sx={{ minWidth: 650,height:'max-content' }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Si. No.</TableCell>
+                      <TableCell align="center">Transaction ID</TableCell>
+                      <TableCell align="center">Card Type</TableCell>
+                      <TableCell align="center">Date & Time</TableCell>
+                      <TableCell align="center">Paid Amount</TableCell>
+                      <TableCell align="center">Transaction Hash</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-              
+                  </TableHead>
+                  <TableBody>
+                    {data.map((row,i) => (
+                      <TableRow
+                        key={i}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      >
+                        <TableCell align="center" component="th" scope="row">
+                          {i+1}
+                        </TableCell>
+                        <TableCell align="center">#{row?.number.split("_")[1]}</TableCell>
+                        <TableCell align="center">
+                        <img
+                          src={`/${row.ccType}.png`} alt="Card"
+                          style={{ width: "40px", marginTop: 0 }}
+                        />
+
+                        </TableCell>
+                        <TableCell align="center">  {moment(row?.createdAt).format("LLL")}</TableCell>
+                        <TableCell align="center">{row?.paidAmount.toFixed(2)}$</TableCell>
+                        <TableCell align="center">
+                          <a target="_blank" href={`https://testnet.bscscan.com/tx/${row?.tokenTransactionHash}`}>
+                          {row?.tokenTransactionHash && truncateEthAddress(row?.tokenTransactionHash)}
+
+                          </a>
+                          
+                        
+                          
+                          </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             )
         }
       )

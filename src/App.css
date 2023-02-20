@@ -3,8 +3,9 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    background-repeat: no-repeat !important;
     background-position: center !important;
+    height: auto !important;
+    min-height: 100vh !important;
     /* min-height: 200% !important; */
     width: 100%;
     backdrop-filter: blur(2px);
