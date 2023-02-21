@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect,useRef} from 'react'
 import Card from "react-credit-cards";
 import "./PaymentTab.css";
 import jwt_decode from "jwt-decode";
-import { CardElement, useElements, useStripe,Elements } from '@stripe/react-stripe-js'
+import { CardElement, CardNumberElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import axios from 'axios'
 // import { useToasts } from 'react-toast-notifications'
 import constants from '../../constant';
@@ -71,7 +71,7 @@ export default function PaymentForm() {
   const [success, setSuccess] = useState(false)
   const stripe = useStripe()
   const elements = useElements()
-
+const [paymentLoading, setPaymentLoading] = useState(false)
   const [userId, setUserId] = useState("")
   const [number, setNumber] = useState("")
   const [name, setName] = useState("")
@@ -92,26 +92,85 @@ export default function PaymentForm() {
 
   const [cardType, setCardType] = useState("")
 
-//   useEffect(()=>{
-// const getData = async()=>{
-// try {
-//   const response = await axios.post("https://careful-turtleneck-shirt-fox.cyclic.app/payment/create")
 
-//   setCustomer(response?.data?.customer);
-//     setClientSecret(response?.data?.paymentIntent?.client_secret)
-// } catch (error) {
-//   console.log(error?.message);
-// }
-// }
-// getData()
-//   },[])
+  const [cardNumberComplete, setCardNumberComplete] = useState(false);
+  const [cvcComplete, setCvcComplete] = useState(false);
+  const [expiryComplete, setExpiryComplete] = useState(false);
+  const cardNumberElementRef = useRef(null);
+  const cvcElementRef = useRef(null);
+  const expiryElementRef = useRef(null);
 
+  useEffect(() => {
+    if (elements) {
+      cardNumberElementRef.current = elements.create('cardNumber');
+      cardNumberElementRef.current.mount('#card-number-container');
+
+      cvcElementRef.current = elements.create('cardCvc');
+      cvcElementRef.current.mount('#card-cvc-container');
+
+      expiryElementRef.current = elements.create('cardExpiry');
+      expiryElementRef.current.mount('#card-expiry-container');
+
+      const handleCardNumberChange = (event) => {
+        
+        setCardNumberComplete(event.complete);
+        setCardType(event.brand)
+
+        if(event.brand==="visa"){
+          setNumber(42)
+        }
+       else if(event.brand==="mastercard"){
+          setNumber(55)
+        }
+        else if(event.brand==="diners"){
+          setNumber(36)
+        }
+        else if(event.brand==="discover"){
+          setNumber(6011)
+        }
+        else if(event.brand==="hipercard"){
+          setNumber(60)
+        }
+
+    
+      };
+
+      const handleCvcChange = (event) => {
+        setCvcComplete(event.complete);
+      };
+
+      const handleExpiryChange = (event) => {
+        setExpiryComplete(event.complete);
+      };
+
+      cardNumberElementRef.current.on('change', handleCardNumberChange);
+      cvcElementRef.current.on('change', handleCvcChange);
+      expiryElementRef.current.on('change', handleExpiryChange);
+
+
+      cardNumberElementRef.current.on('focus', ()=>{setFocused("number")});
+      cvcElementRef.current.on('focus', ()=>{setFocused("cvc")});
+      expiryElementRef.current.on('focus', ()=>{setFocused("expiry")});
+
+      return () => {
+        
+        cardNumberElementRef.current.off('change', handleCardNumberChange);
+        cardNumberElementRef.current.unmount();
+
+        cvcElementRef.current.off('change', handleCvcChange);
+        cvcElementRef.current.unmount();
+
+        expiryElementRef.current.off('change', handleExpiryChange);
+        expiryElementRef.current.unmount();
+      };
+    }
+  }, [elements]);
   
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(elements.getElement(CardElement));
+    // console.log(elements.getElement('card'));
     
     const {error, paymentMethod} = await stripe.createPaymentMethod({
       type: "card",
@@ -153,6 +212,7 @@ export default function PaymentForm() {
   }
 
   const handleInputFocus = ({ target }) => {
+    console.log(target.name);
     setFocused(target.name)
   }
 
@@ -178,7 +238,9 @@ export default function PaymentForm() {
   };
 
   const handleChange = async (event) => {
-    // console.log(elements);
+
+   
+    
     // Listen for changes in the CardElement
     // and display any errors as the customer types their card details
 
@@ -187,67 +249,38 @@ export default function PaymentForm() {
     // setError(event.error ? event.error.message : "");
   };
 
-  // handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const { issuer } = this.state;
-  //   const formData = [...e.target.elements]
-  //     .filter((d) => d.name)
-  //     .reduce((acc, d) => {
-  //       acc[d.name] = d.value;
-  //       return acc;
-  //     }, {});
 
-  //   this.setState({ formData });
-  //   this.form.reset();
-  // };
+
+ 
   
   const moveToTicketPage = async (e) => {
    try {
     e.preventDefault()
-  
+    setPaymentLoading(true)
 
-    console.log(elements.getElement(CardElement),expiry);
 
+    
+    if (!cardNumberComplete && !cvcComplete && !expiryComplete) {
+return alert('asd')
+    }
+
+    // const validation = cardNumber(newNumber);
+    // if (validation.isValid) {
+    //   setBrand(validation.card.niceType);
+    // } else {
+    //   setBrand(null);
+    // }
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
-      card: elements.getElement(CardElement),
-//       card:{
-//         "number": number,
-// "name": name,
-// "expiry": expiry,
-// "cvc": cvc,
-// "issuer": issuer
-//       }
+      card: 
+      cardNumberElementRef.current,
+      metadata: {
+        ccType: 'visa',
+      },
     });
 
     console.log(error,'error');
-    
 
-   
-
-//     setClientSecret(createIntent?.data?.client_secret)
-
-//     const response = await stripe.confirmCardPayment(createIntent?.data?.client_secret,{
-//       payment_method: {
-//         card: elements.getElement(CardElement),
-//         billing_details: {
-//           name:"PrakashSparkz",
-//           address:{
-//             country:"IN"
-//           }
-//         }
-//       },
-//       client_secret:true
-//     })
-// console.log(response);
-
-// const paymentProcess = await axios.post("https://careful-turtleneck-shirt-fox.cyclic.app/payment/process-payment",{
-//   paymentMethodId:paymentMethod?.id,
-//   amount:response?.paymentIntent?.amount,
-//   currency:response?.paymentIntent?.currency
-// })
-
-// console.log(paymentProcess);
 
      if (!error) {
       console.log("Stripe 23 | token generated!",paymentMethod);
@@ -268,10 +301,13 @@ export default function PaymentForm() {
                 text: "Payment Successfully Completed!",
                 icon: 'success',
                 confirmButtonText: 'OK'
+              }).then((result)=>{
+                window.location.href="/getTicket";
               })
               updateMembership(userId, plan,paymentMethod,type,sum)
               .then(response => response.data)
               .then(data => {
+                setPaymentLoading(false)
                 console.log('updated plan', data)
                 localStorage.setItem("ccType", cardType)
                 localStorage.setItem("paidAmount", sum)
@@ -288,6 +324,7 @@ export default function PaymentForm() {
           
         
       } catch (error) {
+        setPaymentLoading(false)
         console.log("Error", error)
         Swal.fire({
           title: 'Error!',
@@ -297,6 +334,7 @@ export default function PaymentForm() {
         })
       }
     } else {
+      setPaymentLoading(false)
       console.log(error.message,'error')
       Swal.fire({
         title: 'Error!',
@@ -309,6 +347,7 @@ export default function PaymentForm() {
     
 
    } catch (error) {
+    setPaymentLoading(false)
     Swal.fire({
       title: 'Error!',
       text: error.message,
@@ -423,13 +462,19 @@ export default function PaymentForm() {
     setSum(_price + _price / 10.0)
 	}, [])
 
+  
+  
+
   return (
     <>
+
+
     <Link to="/routes">
      <button className='back-button-container'>Back</button>
     </Link>
     {/* <ToastProvider/> */}
-    {!success ?
+    {
+    // !success ?
     // <Elements stripe={stripePromise}>
       <div className="paym">
         <div className="row">
@@ -443,6 +488,7 @@ export default function PaymentForm() {
                 cvc={cvc}
                 focused={focused}
                 callback={handleCallback}
+               
               />
                
                         {/* <form
@@ -506,32 +552,54 @@ export default function PaymentForm() {
                     PAY{" "}
                   </button>{" "}
                 </div>{" "}
-              </form>{" "} */}
+              </form> */}
+
+              
+
+             
+    
             
-               {/* <fieldset className="FromGroup">
-          <div className="FormRow">
-            <CardElement options={CARD_OPTIONS} />
-          </div>
-        </fieldset> */}
+
                <form
                 className="credit-form"
                 // onSubmit={handleSubmit}
                 >
                  <fieldset className="FromGroup">
                   <div className="FormRow">
+                    <div style={{transform:'translateX(10px)'}}>
+                  <div style={{border:'1px solid grey',paddingTop:'10px',width:'270px'}} className="frm-ctrl" id="card-number-container"  name="name"> </div><br/>
+
+      <div  style={{border:'1px solid grey',paddingTop:'10px',width:'270px'}} className="frm-ctrl" id="card-expiry-container" name="expiry" />      <br/>
+      <div  style={{border:'1px solid grey',paddingTop:'10px',width:'270px'}} className="frm-ctrl" id="card-cvc-container" name="cvc"  />
+      </div>
                   {/* <CardElement options={CARD_OPTIONS} /> */}
-                    <CardElement options={CARD_OPTIONS} onChange={handleChange} onFocus={handleInputFocus}/>
+                  {/* <CardNumberElement options={CARD_OPTIONS} onChange={handleChange} onFocus={handleInputFocus}/> */}
+                    {/* <CardElement options={CARD_OPTIONS} onChange={handleChange}  onReady={handleInputFocus}/> */}
                  </div>
                 </fieldset>{" "} 
                  <div className="form-group"></div>{" "}
                 <input type="hidden" name="issuer" value={issuer} />{" "}
                 <div className="">
-                  <button
+                  {
+                    paymentLoading?
+
+                    <button
+                    onClick={(e)=>{
+                      e.preventDefault()
+                    }}
+                    className="btn btn-light btCustom"
+                  >
+                   Loading...
+                  </button>
+                    :
+                    <button
                     onClick={(e) => moveToTicketPage(e)}
                     className="btn btn-light btCustom"
                   >
                     PAY{" "}
-                  </button>{" "}
+                  </button>
+                  }
+                 
                 </div>{" "}
               </form> 
              
@@ -584,10 +652,10 @@ export default function PaymentForm() {
         </div>{" "}
       </div>
       // </Elements>
-      :
-      <div>
-        <h2>You just bought a sweet things</h2>
-      </div>
+      // :
+      // <div>
+      //   <h2>You just bought a sweet things</h2>
+      // </div>
     } 
     </>
   )

@@ -86,7 +86,7 @@ export default function TicketPage({ history }) {
           </div>
         </nav>
       </div>
-      <div className="tpMain">
+      <div className="tpMain ticket-container">
         <article className="ticket">
           <header className="ticket__wrapper">
             <div className="ticket__header">
@@ -123,7 +123,7 @@ export default function TicketPage({ history }) {
           </div>
 
           <footer className="ticket__footer">
-            <p>Transaction-ID: {transactionId}</p>
+            <p>Transaction-ID: {transactionId.split("_")[1]}</p>
           </footer>
         </article>
       </div>
