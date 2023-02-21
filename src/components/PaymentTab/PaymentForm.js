@@ -9,6 +9,7 @@ import constants from '../../constant';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import truncateEthAddress from 'truncate-eth-address'
 import 'sweetalert2/src/sweetalert2.scss'
+import { Link } from 'react-router-dom';
 
 import {
   formatCreditCardNumber,
@@ -177,7 +178,7 @@ export default function PaymentForm() {
   };
 
   const handleChange = async (event) => {
-    console.log(event);
+    // console.log(elements);
     // Listen for changes in the CardElement
     // and display any errors as the customer types their card details
 
@@ -424,6 +425,9 @@ export default function PaymentForm() {
 
   return (
     <>
+    <Link to="/routes">
+     <button className='back-button-container'>Back</button>
+    </Link>
     {/* <ToastProvider/> */}
     {!success ?
     // <Elements stripe={stripePromise}>
@@ -441,7 +445,7 @@ export default function PaymentForm() {
                 callback={handleCallback}
               />
                
-                     {/*    <form
+                        {/* <form
                 className="credit-form"
                 // ref={(c) => (form = c)}
                 onSubmit={handleSubmit}

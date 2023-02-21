@@ -31,30 +31,30 @@ function Subscription() {
   const tok = sessionStorage.getItem('authToken')
   const decoded = jwt_decode(tok)
  React.useEffect(() => {
-   if(decoded){
-    setUser(decoded?.doc)
-    // console.log( JSON.parse(window.localStorage.getItem('paymentData')));
-    // return JSON.parse(window.localStorage.getItem('paymentData'))
+//    if(decoded){
+//     setUser(decoded?.doc)
+//     // console.log( JSON.parse(window.localStorage.getItem('paymentData')));
+//     // return JSON.parse(window.localStorage.getItem('paymentData'))
    
-   }else{
-    setUser(JSON.parse(window.localStorage.getItem('paymentData')))
-    // return decoded?.doc
-   }
+//    }else{
+//     setUser(JSON.parse(window.localStorage.getItem('paymentData')))
+// //  return decoded?.doc
+//    }
 
-   const getData = async()=>{
-    try {
-      const {data} = await Axios.post(`${constants.baseURL}/get-user`,{
-        userId:JSON.parse(window.localStorage.getItem('paymentData'))._id
-      })
-      setUser(data?.data);
-    } catch (error) {
-      console.log(error);
-    }
-   }
-   if (window.localStorage.getItem('paymentData')) {
-    getData()
-   }
-  }, [])
+    const getData = async()=>{
+      try {
+        const {data} = await Axios.post(`${constants.baseURL}/get-user`,{
+            userId:JSON.parse(window.localStorage.getItem('paymentData'))._id
+          })
+          setUser(data?.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      if (window.localStorage.getItem('paymentData')) {
+        getData()
+      }
+    }, [])
 
   // console.log(user);
 
@@ -68,10 +68,12 @@ function Subscription() {
   let history = useHistory();
   return (
     <>
-{
-  user?.membership?
-  <div>
-    <Box mb={"-55px"}  mt={"16px"} mr={2.4}> 
+   {
+
+   user?.membership?
+<div>
+
+<Box mb={"-55px"}  mt={"16px"} mr={2.4}> 
     <Grid item display="flex" justifyContent="flex-end" alignItems={"center"}  >
       <Typography
         fontSize="14px"
@@ -185,10 +187,10 @@ function Subscription() {
                 sx={{
                   width: "90%",
                   backgroundColor: 
-                  user?.membership?.name==="Basic"? "#007fed" : "grey",
-                  color: "white",
+                  user?.membership?.name==="Basic"? "white" : "grey",
+                  color: user?.membership?.name==="Basic"?"black":"white",
                   fontwwight: "700",
-                  border: "1px solid none",
+                  border:user?.membership?.name==="Basic"?"1px solid black": "1px solid none",
                   cursor: "pointer",
                   marginTop: "10px",
                   "&:hover": { backgroundColor: 
@@ -205,7 +207,7 @@ function Subscription() {
                   user?.membership?.name==="Basic"
                 }
               >
-                <Typography textTransform="none" fontwwight={"bold"} style={{color:'white'}}>
+                <Typography textTransform="none" fontwwight={"bold"} style={{color:user?.membership?.name==="Basic"?"black": "white"}}>
               
 
                   { !user.membership && "Upgrade" }
@@ -400,13 +402,13 @@ function Subscription() {
                     width: "90%",
                     backgroundColor:
                     
-                    user?.membership?.name==="Plus"?"#007fed":
+                    user?.membership?.name==="Plus"?"white":
                     user.membership && (user.membership.month < 9.99 || user.membership.annual < 8.9)  && "#5dc26a" ||
                     user.membership && (user.membership.month > 9.99 || user.membership.annual > 8.9)  && "grey" 
                     ,
-                    color: "white",
+                    color: user?.membership?.name==="Plus"?"black":"white",
                     fontwwight: "700",
-                    border: "1px solid none",
+                    border:user?.membership?.name==="Plus"?"1px solid black": "1px solid none",
                     cursor: "pointer",
                     marginTop: "10px",
                     "&:hover": { backgroundColor: 
@@ -427,7 +429,7 @@ function Subscription() {
                     user?.membership?.name==="Plus"
                   }
                 >
-                  <Typography textTransform="none" fontwwight={"bold"} style={{color:'white'}}>
+                  <Typography textTransform="none" fontwwight={"bold"} style={{color:user?.membership?.name==="Plus"?"black": "white"}}>
                     { !user.membership && "Start Free Trial" }
                   
                     {/* { user.membership && (user.membership.month === 9.99 || user.membership.annual === 8.9)  && "Current Plan" } */}
@@ -648,13 +650,13 @@ function Subscription() {
                 sx={{
                   width: "90%",
                   backgroundColor:
-                  user?.membership?.name==="Professional"?"#007fed":
+                  user?.membership?.name==="Professional"?"white":
                   (!user.membership || (user.membership && (user.membership.month < 49.0 || user.membership.annual < 39.9))) && "#5dc26a" ||
                   user.membership && (user.membership.month > 49.0 || user.membership.annual > 39.9)  && "grey" 
                   ,
-                  color: "white",
+                  color: user?.membership?.name==="Professional"?"black":"white",
                   fontwwight: "700",
-                  border: "1px solid none",
+                  border:user?.membership?.name==="Professionl"?"1px solid black": "1px solid none",
                   cursor: "pointer",
                   marginTop: "10px",
                   "&:hover": { backgroundColor: 
@@ -675,7 +677,7 @@ function Subscription() {
                   user?.membership?.name==="Professional"
                 }
               >
-                <Typography textTransform="none" fontwwight={"bold"} style={{color:'white'}}>
+                <Typography textTransform="none" fontwwight={"bold"} style={{color:user?.membership?.name==="Professional"?"black": "white",}}>
                  
                   {/* { user.membership && (user.membership.month === 49.0 || user.membership.annual === 39.9)  && "Current Plan" } */}
                   {
@@ -862,17 +864,18 @@ function Subscription() {
             <Grid item>
               <Grid item display="flex" justifyContent="center" mt={1}>
                 <Button
+                
                   sx={{
                     width: "90%",
                     backgroundColor: 
-                    user?.membership?.name==="Premier"?"#007fed":
+                    user?.membership?.name==="Premier"?"white":
                     (!user.membership || (user.membership && (user.membership.month < 99.0 || user.membership.annual < 79.9))) && "#5dc26a" ||
                     user.membership && (user.membership.month > 99.0 || user.membership.annual > 79.9)  && "grey" 
                     
                     ,
-                    color: "white",
+                   
                     fontwwight: "700",
-                    border: "1px solid none",
+                    border:user?.membership?.name==="Premier"?"2px solid black": "1px solid none",
                     cursor: "pointer",
                     marginTop: "10px",
                     "&:hover": { backgroundColor: 
@@ -894,7 +897,7 @@ function Subscription() {
                     user?.membership?.name==="Premier"
                   }
                 >
-                  <Typography textTransform="none" fontwwight={"bold"} style={{color:'white'}}>
+                  <Typography textTransform="none" fontwwight={"bold"} style={{color:user?.membership?.name==="Premier"?"black":"white"}}>
                   
                     {/* { user.membership && (user.membership.month === 99.0 || user.membership.annual === 79.9)  && "Current Plan" } */}
                     {
