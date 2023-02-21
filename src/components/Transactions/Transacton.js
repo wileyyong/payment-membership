@@ -73,7 +73,7 @@ function Transacton() {
                         />
 
                         </TableCell>
-                        <TableCell align="center">  {moment(row?.createdAt).format("LLL")}</TableCell>
+                        <TableCell align="center">  {moment(row?._createdAt).format("LLL")}</TableCell>
                         <TableCell align="center">{row?.paidAmount.toFixed(2)}$</TableCell>
                         <TableCell align="center">
                           <a target="_blank" href={`https://testnet.bscscan.com/tx/${row?.tokenTransactionHash}`} rel="noreferrer">

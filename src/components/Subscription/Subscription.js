@@ -68,6 +68,9 @@ function Subscription() {
   let history = useHistory();
   return (
     <>
+{
+  user?.membership?
+  <div>
     <Box mb={"-55px"}  mt={"16px"} mr={2.4}> 
     <Grid item display="flex" justifyContent="flex-end" alignItems={"center"}  >
       <Typography
@@ -207,11 +210,11 @@ function Subscription() {
 
                   { !user.membership && "Upgrade" }
                   {
-                    user?.membership?.name==="Basic"?"Current Plan":
+                    user?.membership?.name==="Basic"?"":
                   
 
                    user.membership && (user.membership.month > 4.99 || user.membership.annual > 4.5)  && "Downgrade" }
-                  {/* { user.membership && (user.membership.month === 4.99 || user.membership.annual === 4.5)  && "Current Plan" } */}
+                 
                   {
         user?.membership?.name==="Basic" && <span style={{display:'inline-flex'}}>   Renew on &nbsp; {moment(user?.renew).format("DD-MM-YYYY") }  </span>
 }
@@ -429,7 +432,7 @@ function Subscription() {
                   
                     {/* { user.membership && (user.membership.month === 9.99 || user.membership.annual === 8.9)  && "Current Plan" } */}
                     {
-                    user?.membership?.name==="Plus"?"Current Plan":
+                    user?.membership?.name==="Plus"?"":
                      user.membership && (user.membership.month < 9.99 || user.membership.annual < 8.9)  && "Upgrade" ||
                      user.membership && (user.membership.month > 9.99 || user.membership.annual > 8.9)  && "Downgrade" 
 
@@ -676,7 +679,7 @@ function Subscription() {
                  
                   {/* { user.membership && (user.membership.month === 49.0 || user.membership.annual === 39.9)  && "Current Plan" } */}
                   {
-                    user?.membership?.name==="Professional"?"Current Plan":
+                    user?.membership?.name==="Professional"?"":
                      (!user.membership || (user.membership && (user.membership.month < 49.0 || user.membership.annual < 39.9))) && "Upgrade" ||
                      user.membership && (user.membership.month > 49.0 || user.membership.annual > 39.9)  && "Downgrade" 
 
@@ -895,7 +898,7 @@ function Subscription() {
                   
                     {/* { user.membership && (user.membership.month === 99.0 || user.membership.annual === 79.9)  && "Current Plan" } */}
                     {
-                    user?.membership?.name==="Premier"?"Current Plan ":
+                    user?.membership?.name==="Premier"?" ":
                     (!user.membership || (user.membership && (user.membership.month < 99.0 || user.membership.annual < 79.9))) && "Upgrade" ||
                     user.membership && (user.membership.month > 99.0 || user.membership.annual > 79.9)  && "Downgrade" 
 
@@ -1037,6 +1040,17 @@ function Subscription() {
           </Card>
         </Grid>
       </Grid>
+</div>
+    :
+<div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'50%'}}>
+
+  <h1 style={{textAlign:'center'}}>
+    Loading....
+  </h1>
+</div>
+
+   }
+
     </>
   );
 }

@@ -212,7 +212,9 @@ theme="light"
             <img src={Copy} alt="copyClipboard" style={{width:'20px',cursor:'pointer',marginLeft:'5px'}}/>
            </span>
            </p>
-           <p className="jjtToken right"> {address}JJT</p>
+           <p className="jjtToken right"> {address}JJT 
+           {/* (<span>{userDoc?.amount && parseFloat(userDoc?.amount)?.toFixed(2)}$</span>) */}
+           </p>
             </div>
             
             </div>
