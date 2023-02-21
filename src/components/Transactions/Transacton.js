@@ -1,12 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, Card, Button, ListItem } from "@mui/material";
-import CreditCardRoundedIcon from "@mui/icons-material/CreditCardRounded";
-import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import Visa from "../../images/visa.png";
-import Cash from "../../images/cash.png";
-import Done from "../../images/done.png";
-import Done2 from "../../images/bluedone1.png";
-import moment from 'moment'
+import { Grid } from "@mui/material";
+import moment from 'moment';
 import constants from "../../constant";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,41 +9,33 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import truncateEthAddress from 'truncate-eth-address'
-import jwt_decode from 'jwt-decode'
-import axios from 'axios'
-
-
-
-
-
+import truncateEthAddress from 'truncate-eth-address';
+import jwt_decode from 'jwt-decode';
+import axios from 'axios';
 
 function Transacton() {
 
-  const [listTransactions, setListTransactions] = useState([])
-  const [listItems, setListItems] = useState([])
+  const [listItems, setListItems] = useState([]);
 
   const rows=[1]
 
 
   
-const tok = sessionStorage.getItem('authToken')
-const decoded = jwt_decode(tok)
+  const tok = sessionStorage.getItem('authToken');
+  const decoded = jwt_decode(tok);
 
 
 
-const getAllTransaction = () => {
-try {
-let apiUrl = `${constants.baseURL}/transaction`
-return axios.post(apiUrl,{
-user_id: decoded?.doc?._id
-})
-} catch (error) {
-console.log(error.message);
-}
-
-}
+  const getAllTransaction = () => {
+    try {
+      let apiUrl = `${constants.baseURL}/transaction`;
+      return axios.post(apiUrl,{
+        user_id: decoded?.doc?._id
+      })
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
   
   useEffect(() => {
 		getAllTransaction()
@@ -89,13 +76,9 @@ console.log(error.message);
                         <TableCell align="center">  {moment(row?.createdAt).format("LLL")}</TableCell>
                         <TableCell align="center">{row?.paidAmount.toFixed(2)}$</TableCell>
                         <TableCell align="center">
-                          <a target="_blank" href={`https://testnet.bscscan.com/tx/${row?.tokenTransactionHash}`}>
-                          {row?.tokenTransactionHash && truncateEthAddress(row?.tokenTransactionHash)}
-
+                          <a target="_blank" href={`https://testnet.bscscan.com/tx/${row?.tokenTransactionHash}`} rel="noreferrer">
+                            {row?.tokenTransactionHash && truncateEthAddress(row?.tokenTransactionHash)}
                           </a>
-                          
-                        
-                          
                           </TableCell>
                       </TableRow>
                     ))}
