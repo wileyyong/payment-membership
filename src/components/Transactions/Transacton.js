@@ -54,10 +54,11 @@ function Transacton() {
                       <TableCell align="center">Date & Time</TableCell>
                       <TableCell align="center">Paid Amount</TableCell>
                       <TableCell align="center">Transaction Hash</TableCell>
+                      <TableCell align="center">Transaction Receipt</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {data.map((row,i) => (
+                    { data?.length !==0 ? data.map((row,i) => (
                       <TableRow
                         key={i}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -79,9 +80,16 @@ function Transacton() {
                           <a target="_blank" href={`https://testnet.bscscan.com/tx/${row?.tokenTransactionHash}`} rel="noreferrer">
                             {row?.tokenTransactionHash && truncateEthAddress(row?.tokenTransactionHash)}
                           </a>
-                          </TableCell>
+                        </TableCell>
+                        <TableCell>    
+                            <a href={row?.paymentMethod?.receipt_url} target="_blank" rel="noreferrer">Click to see...</a>
+                        </TableCell>
                       </TableRow>
-                    ))}
+                    )):
+                      <TableRow>
+                        <h3 style={{position:'absolute',left:'50%',transform:'translateX(-50%)',marginTop:'30px'}}>No Data Found..</h3>
+                      </TableRow>
+                    }
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -98,7 +106,7 @@ function Transacton() {
   return (
     <Grid container mt={2}> 
     
-    <div className="rdc" style={{ minHeight: "700px", backgroundColor: "#fff", marginBottom: "30px" }}>
+    <div className="rdc" style={{ height: "700px", backgroundColor: "#fff" }}>
       {listItems}
 
       {/* <Box
