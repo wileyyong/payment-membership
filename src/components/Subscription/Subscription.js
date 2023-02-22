@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/alt-text */
 import * as React from "react";
 import { Grid, Box, Typography, Card, Button } from "@mui/material";
 import Basic from "../../images/BasicLogo.png";
@@ -41,20 +39,19 @@ function Subscription() {
 // //  return decoded?.doc
 //    }
 
-    const getData = async()=>{
-      try {
-        const {data} = await Axios.post(`${constants.baseURL}/get-user`,{
-            userId:JSON.parse(window.localStorage.getItem('paymentData'))._id
-          })
-          setUser(data?.data);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      if (window.localStorage.getItem('paymentData')) {
-        getData()
-      }
-    }, [])
+   const getData = async()=>{
+try {
+  const {data} = await Axios.post(`${constants.baseURL}/get-user`,{
+    userId:decoded?.doc?._id
+  })
+  setUser(data?.data);
+} catch (error) {
+  console.log(error);
+}
+   }
+   getData()
+   
+  }, [])
 
   // console.log(user);
 
@@ -197,7 +194,7 @@ function Subscription() {
                     user?.membership?.name==="Basic"? "#007fed" : "grey" },
                 }}
                 onClick={() => {
-                  if (!(user.membership && (user.membership.month === 4.99 || user.membership.annual === 4.5))) {
+                  if (!(user.membership && (user.membership.month == 4.99 || user.membership.annual == 4.5))) {
                     localStorage.setItem("licenseplan", JSON.stringify("basic"))
                     localStorage.setItem("isannual", isAnnual)
                     history.push(`/payment`)
@@ -419,7 +416,7 @@ function Subscription() {
                   }}
                   // onClick={() => history.push(`/payment?plan=plus&isAnnual=${isAnnual}`)}
                   onClick={() => {
-                    if (!(user.membership && (user.membership.month === 9.99 || user.membership.annual === 8.9))) {
+                    if (!(user.membership && (user.membership.month == 9.99 || user.membership.annual == 8.9))) {
                       localStorage.setItem("licenseplan", JSON.stringify("plus"))
                       localStorage.setItem("isannual", isAnnual)
                       history.push(`/payment`)
@@ -432,7 +429,7 @@ function Subscription() {
                   <Typography textTransform="none" fontwwight={"bold"} style={{color:user?.membership?.name==="Plus"?"black": "white"}}>
                     { !user.membership && "Start Free Trial" }
                   
-                    {/* { user.membership && (user.membership.month === 9.99 || user.membership.annual === 8.9)  && "Current Plan" } */}
+                    {/* { user.membership && (user.membership.month == 9.99 || user.membership.annual == 8.9)  && "Current Plan" } */}
                     {
                     user?.membership?.name==="Plus"?"":
                      user.membership && (user.membership.month < 9.99 || user.membership.annual < 8.9)  && "Upgrade" ||
@@ -667,7 +664,7 @@ function Subscription() {
                 }}
                 // onClick={() => history.push(`/payment?plan=professional&isAnnual=${isAnnual}`)}
                 onClick={() => {
-                  if (!(user.membership && (user.membership.month === 49.0 || user.membership.annual === 39.9))) {
+                  if (!(user.membership && (user.membership.month == 49.0 || user.membership.annual == 39.9))) {
                     localStorage.setItem("licenseplan", JSON.stringify("professional"))
                     localStorage.setItem("isannual", isAnnual)
                     history.push(`/payment`)
@@ -679,7 +676,7 @@ function Subscription() {
               >
                 <Typography textTransform="none" fontwwight={"bold"} style={{color:user?.membership?.name==="Professional"?"black": "white",}}>
                  
-                  {/* { user.membership && (user.membership.month === 49.0 || user.membership.annual === 39.9)  && "Current Plan" } */}
+                  {/* { user.membership && (user.membership.month == 49.0 || user.membership.annual == 39.9)  && "Current Plan" } */}
                   {
                     user?.membership?.name==="Professional"?"":
                      (!user.membership || (user.membership && (user.membership.month < 49.0 || user.membership.annual < 39.9))) && "Upgrade" ||
@@ -887,7 +884,7 @@ function Subscription() {
                   }}
                   // onClick={() => history.push(`/payment?plan=premier&isAnnual=${isAnnual}`)}
                   onClick={() => {
-                    if (!(user.membership && (user.membership.month === 99.0 || user.membership.annual === 79.9))) {
+                    if (!(user.membership && (user.membership.month == 99.0 || user.membership.annual == 79.9))) {
                       localStorage.setItem("licenseplan", JSON.stringify("premier"))
                       localStorage.setItem("isannual", isAnnual)
                       history.push(`/payment`)
@@ -899,7 +896,7 @@ function Subscription() {
                 >
                   <Typography textTransform="none" fontwwight={"bold"} style={{color:user?.membership?.name==="Premier"?"black":"white"}}>
                   
-                    {/* { user.membership && (user.membership.month === 99.0 || user.membership.annual === 79.9)  && "Current Plan" } */}
+                    {/* { user.membership && (user.membership.month == 99.0 || user.membership.annual == 79.9)  && "Current Plan" } */}
                     {
                     user?.membership?.name==="Premier"?" ":
                     (!user.membership || (user.membership && (user.membership.month < 99.0 || user.membership.annual < 79.9))) && "Upgrade" ||
