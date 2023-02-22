@@ -42,6 +42,38 @@ const createTransaction = (ccType, paidAmount,paymentMethod,userId) => {
 }
 
 
+const createPaymentV2 = (userId,
+  membershipName,
+  type,
+  amount,
+  cardNumber,
+  expiryMonth,
+  expiryYear,
+  cvc) =>{
+
+ try {
+  let apiUrl = `${constants.baseURL}/payment/payment_v2`
+  return axios.post(apiUrl,{
+    userId,
+membershipName,
+type,
+amount,
+cardNumber:cardNumber.replace(/\s+/g, ""),
+expiryMonth:expiryMonth.split('/')[0],
+expiryYear:`20${ expiryYear.split('/')[1]}`,
+cvc
+  })
+ } catch (error) {
+  
+  Swal.fire({
+    title: 'Error!',
+    text: error.message,
+    icon: 'error',
+    confirmButtonText: 'OK'
+  })
+ }
+  }
+
 
 
 const CARD_OPTIONS = {
@@ -100,71 +132,74 @@ const [paymentLoading, setPaymentLoading] = useState(false)
   const cvcElementRef = useRef(null);
   const expiryElementRef = useRef(null);
 
-  useEffect(() => {
-    if (elements) {
-      cardNumberElementRef.current = elements.create('cardNumber');
-      cardNumberElementRef.current.mount('#card-number-container');
+  // useEffect(() => {
+  //   if (elements) {
+  //     cardNumberElementRef.current = elements.create('cardNumber');
+  //     cardNumberElementRef.current.mount('#card-number-container');
 
-      cvcElementRef.current = elements.create('cardCvc');
-      cvcElementRef.current.mount('#card-cvc-container');
+  //     cvcElementRef.current = elements.create('cardCvc');
+  //     cvcElementRef.current.mount('#card-cvc-container');
 
-      expiryElementRef.current = elements.create('cardExpiry');
-      expiryElementRef.current.mount('#card-expiry-container');
+  //     expiryElementRef.current = elements.create('cardExpiry');
+  //     expiryElementRef.current.mount('#card-expiry-container');
 
-      const handleCardNumberChange = (event) => {
+  //     const handleCardNumberChange = (event) => {
+
         
-        setCardNumberComplete(event.complete);
-        setCardType(event.brand)
+  //       console.log(event);
+        
+  //       setCardNumberComplete(event.complete);
+  //       setCardType(event.brand)
 
-        if(event.brand==="visa"){
-          setNumber(42)
-        }
-       else if(event.brand==="mastercard"){
-          setNumber(55)
-        }
-        else if(event.brand==="diners"){
-          setNumber(36)
-        }
-        else if(event.brand==="discover"){
-          setNumber(6011)
-        }
-        else if(event.brand==="hipercard"){
-          setNumber(60)
-        }
+  //       if(event.brand==="visa"){
+  //         setNumber(42)
+  //       }
+  //      else if(event.brand==="mastercard"){
+  //         setNumber(55)
+  //       }
+  //       else if(event.brand==="diners"){
+  //         setNumber(36)
+  //       }
+  //       else if(event.brand==="discover"){
+  //         setNumber(6011)
+  //       }
+  //       else if(event.brand==="hipercard"){
+  //         setNumber(60)
+  //       }
 
     
-      };
+  //     };
 
-      const handleCvcChange = (event) => {
-        setCvcComplete(event.complete);
-      };
+  //     const handleCvcChange = (event) => {
+  //       setCvcComplete(event.complete);
+  //     };
 
-      const handleExpiryChange = (event) => {
-        setExpiryComplete(event.complete);
-      };
+  //     const handleExpiryChange = (event) => {
+  //       setExpiryComplete(event.complete);
+  //     };
 
-      cardNumberElementRef.current.on('change', handleCardNumberChange);
-      cvcElementRef.current.on('change', handleCvcChange);
-      expiryElementRef.current.on('change', handleExpiryChange);
+  //     cardNumberElementRef.current.on('change', handleCardNumberChange);
+  //     cvcElementRef.current.on('change', handleCvcChange);
+  //     expiryElementRef.current.on('change', handleExpiryChange);
 
 
-      cardNumberElementRef.current.on('focus', ()=>{setFocused("number")});
-      cvcElementRef.current.on('focus', ()=>{setFocused("cvc")});
-      expiryElementRef.current.on('focus', ()=>{setFocused("expiry")});
+  //     cardNumberElementRef.current.on('focus', ()=>{setFocused("number")});
+  //     cvcElementRef.current.on('focus', ()=>{setFocused("cvc")});
+  //     expiryElementRef.current.on('focus', ()=>{setFocused("expiry")});
 
-      return () => {
+  //     return () => {
         
-        cardNumberElementRef.current.off('change', handleCardNumberChange);
-        cardNumberElementRef.current.unmount();
+  //       cardNumberElementRef.current.off('change', handleCardNumberChange);
+  //       cardNumberElementRef.current.unmount();
 
-        cvcElementRef.current.off('change', handleCvcChange);
-        cvcElementRef.current.unmount();
+  //       cvcElementRef.current.off('change', handleCvcChange);
+  //       cvcElementRef.current.unmount();
 
-        expiryElementRef.current.off('change', handleExpiryChange);
-        expiryElementRef.current.unmount();
-      };
-    }
-  }, [elements]);
+  //       expiryElementRef.current.off('change', handleExpiryChange);
+  //       expiryElementRef.current.unmount();
+  //     };
+  //   }
+  // }, [elements]);
   
 
   const handleSubmit = async (e) => {
@@ -463,6 +498,71 @@ return alert('asd')
 	}, [])
 
   
+  const handleSubmitNewPayment = async(e)=>{
+    e.preventDefault()
+    console.log(number,name,expiry,cvc);
+
+ 
+
+      try {
+        if(number==="" || name==="" || expiry==="" || cvc===""){
+          return  Swal.fire({
+              title: 'Error!',
+              text: "Please, Fill the Card",
+              icon: 'error',
+              confirmButtonText: 'OK'
+            })
+          }
+        setPaymentLoading(true)
+       
+        const data = await createPaymentV2(userId,
+          plan,
+          type,
+          sum,
+          number,
+          expiry,
+          expiry,
+          cvc)
+
+         
+    
+          console.log(data);
+          if(data.data.message==="Payment successful"){
+
+            localStorage.setItem("transactionId", data.data.sendData.transactionId)
+
+            Swal.fire({
+              title: 'Success',
+              text: "Payment Successfully Completed!",
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then((result)=>{
+              window.location.href="/getTicket";
+            })
+
+            localStorage.setItem("ccType", data.data.sendData.cardType)
+            localStorage.setItem("paidAmount", data.data.sendData.paidAmount)
+            localStorage.setItem("plan", data.data.sendData.plan)
+            localStorage.setItem("paymentData", JSON.stringify(data.data.sendData.data));
+            window.location.href = "/getTicket"; 
+    
+          }
+
+
+        
+      } catch (error) {
+        setPaymentLoading(false)
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+      }finally{
+        setPaymentLoading(false)
+      }
+
+  }
   
 
   return (
@@ -490,11 +590,11 @@ return alert('asd')
                 callback={handleCallback}
                
               />
+
+              
                
-                        {/* <form
+                        <form
                 className="credit-form"
-                // ref={(c) => (form = c)}
-                onSubmit={handleSubmit}
               >
                 <div className="form-group">
                   <input
@@ -545,14 +645,28 @@ return alert('asd')
                 </div>{" "}
                 <input type="hidden" name="issuer" value={issuer} />{" "}
                 <div className="">
-                  <button
-                    onClick={(e) => moveToTicketPage(e)}
+                {
+                    paymentLoading?
+
+                    <button
+                    onClick={(e)=>{
+                      e.preventDefault()
+                    }}
+                    className="btn btn-light btCustom"
+                  >
+                   Loading...
+                  </button>
+                    :
+                    <button
+                    onClick={(e) => handleSubmitNewPayment(e)}
                     className="btn btn-light btCustom"
                   >
                     PAY{" "}
-                  </button>{" "}
+                  </button>
+                  }
+                 
                 </div>{" "}
-              </form> */}
+              </form>
 
               
 
@@ -566,20 +680,20 @@ return alert('asd')
                 >
                  <fieldset className="FromGroup">
                   <div className="FormRow">
-                    <div style={{transform:'translateX(10px)'}}>
+                    {/* <div style={{transform:'translateX(10px)'}}>
                   <div style={{border:'1px solid grey',paddingTop:'10px',width:'270px'}} className="frm-ctrl" id="card-number-container"  name="name"> </div><br/>
 
       <div  style={{border:'1px solid grey',paddingTop:'10px',width:'270px'}} className="frm-ctrl" id="card-expiry-container" name="expiry" />      <br/>
       <div  style={{border:'1px solid grey',paddingTop:'10px',width:'270px'}} className="frm-ctrl" id="card-cvc-container" name="cvc"  />
-      </div>
+      </div> */}
                   {/* <CardElement options={CARD_OPTIONS} /> */}
                   {/* <CardNumberElement options={CARD_OPTIONS} onChange={handleChange} onFocus={handleInputFocus}/> */}
                     {/* <CardElement options={CARD_OPTIONS} onChange={handleChange}  onReady={handleInputFocus}/> */}
                  </div>
                 </fieldset>{" "} 
-                 <div className="form-group"></div>{" "}
-                <input type="hidden" name="issuer" value={issuer} />{" "}
-                <div className="">
+                 {/* <div className="form-group"></div>{" "}
+                <input type="hidden" name="issuer" value={issuer} />{" "} */}
+                {/* <div className="">
                   {
                     paymentLoading?
 
@@ -600,7 +714,7 @@ return alert('asd')
                   </button>
                   }
                  
-                </div>{" "}
+                </div>{" "} */}
               </form> 
              
             </div>{" "}
