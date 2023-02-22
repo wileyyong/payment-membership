@@ -190,8 +190,6 @@ theme="light"
                 License Plan
               </a>
             </li>
-
-            
             <li className="nav-item">
               <a
                 className="nav-link"

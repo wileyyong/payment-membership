@@ -18,7 +18,7 @@ export default function TicketPage({ history }) {
 	}, [])
   
   return (   
-    <div className="container">
+    <div className="container ">
       <div>
         <nav className="mb-4 navbar navbar-expand-lg navbar-dark bg-unique hm-gradient">
           <a href="/routes" style={{borderRadius:'10px',padding:'10px'}}>
