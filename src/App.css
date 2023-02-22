@@ -36,3 +36,17 @@ body {
     transition: opacity 150ms linear;
 
 }
+
+
+.back-button-container{
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 20px;
+    transform: translateY(-20px);
+    cursor: pointer;
+}
+
+.back-button-container:active{
+    outline: none;
+}
