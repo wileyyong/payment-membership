@@ -6,9 +6,9 @@ body {
     background-position: center !important;
     height: auto !important;
     min-height: 100vh !important;
-    /* min-height: 200% !important; */
+     /* min-height: 200% !important;  */
     width: 100%;
-    backdrop-filter: blur(2px);
+    /* backdrop-filter: blur(2px); */
     overflow-x: hidden !important;
 }
 

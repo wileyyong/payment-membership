@@ -112,8 +112,8 @@ export default function TicketPage({ history }) {
             <section className="ticket__section" style={{display:'flex',alignItemsc:'center',gap:'10px'}}>
               
  
-    <h3>CC Type: {ccType}</h3>
-    <img src={`/${ccType}.png`} alt="card" style={{width:'30px',marginTop:'-5px'}}/>
+              <h3>CC Type: {ccType}</h3>
+              <img src={`/${ccType}.png`} alt="card" style={{width: "40px",marginTop:'-5px'}}/>
    
              
             </section>
